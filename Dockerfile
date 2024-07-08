@@ -1,4 +1,4 @@
-FROM node:20-alpine AS base
+FROM node:alpine AS base
 
 FROM base AS deps
 RUN apk add --no-cache libc6-compat
@@ -7,11 +7,11 @@ WORKDIR /app
 
 COPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* ./
 RUN \
-  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
-  elif [ -f package-lock.json ]; then npm ci; \
-  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
-  else echo "Lockfile not found." && exit 1; \
-  fi
+    if [ -f yarn.lock ]; then yarn --frozen-lockfile; \
+    elif [ -f package-lock.json ]; then npm ci; \
+    elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm i; \
+    else echo "Lockfile not found." && exit 1; \
+    fi
 
 
 FROM base AS builder
@@ -36,6 +36,8 @@ COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 
 USER nextjs
 
-ENV HOSTNAME=0.0.0.0
+EXPOSE 3000
 
-ENTRYPOINT ["node", "server.js"]
+ENV PORT=3000
+
+ENTRYPOINT [ "node", "server" ]
