@@ -101,7 +101,7 @@ const LoginPage = () => {
                       value={username}
                       onChange={handleInputChange}
                       id="username"
-                      className="focus:outline-none bg-neutral-950 border border-emerald-600  rounded-lg block w-full p-2.5 "
+                      className="focus:outline-none text-white bg-neutral-950 border border-emerald-600  rounded-lg block w-full p-2.5 "
                       placeholder="Username"
                       required
                     />
@@ -120,7 +120,7 @@ const LoginPage = () => {
                       value={password}
                       onChange={handleInputChange}
                       placeholder="••••••••"
-                      className="focus:outline-none bg-neutral-950 border border-emerald-600  rounded-lg block w-full p-2.5 "
+                      className="focus:outline-none text-white bg-neutral-950 border border-emerald-600  rounded-lg block w-full p-2.5 "
                       required
                     />
                   </div>

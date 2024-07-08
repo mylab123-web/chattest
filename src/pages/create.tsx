@@ -5,6 +5,7 @@ import { useState } from "react";
 import axios from "axios";
 import MemberType from "@/app/types/MemberType";
 import { useRouter } from "next/router";
+import { HOST } from "@/app/config";
 
 interface Response {
   id: string;
@@ -27,7 +28,7 @@ const CreatePage = () => {
     if (localStorage.getItem("token")) {
       try {
         const { data }: { data: ResponseData } = await axios.post(
-          "http://4.182.105.105/api/rooms/",
+          `http://${HOST}/api/rooms/`,
           {
             title: subject,
           },
@@ -67,14 +68,14 @@ const CreatePage = () => {
     <>
       <Navbar />
 
-      <div className="bg-zinc-900 text-emerald-500">
+      <div className="bg-neutral-950 text-emerald-500">
         <section className="">
           <div className="flex flex-col items-center justify-center px-6 py-8 mx-auto md:h-screen lg:py-0">
             <a
               href="#"
               className="flex items-center mb-6 text-2xl font-semibold"
             ></a>
-            <div className="w-full  rounded-lg shadow dark:border md:mt-0 sm:max-w-md xl:p-0 dark:bg-gray-800 ">
+            <div className="w-full  rounded-lg shadow border border-emerald-500 md:mt-0 sm:max-w-md xl:p-0  ">
               <div className="p-6 space-y-4 md:space-y-6 sm:p-8">
                 <h1 className="text-xl text-emerald-600 font-bold leading-tight tracking-tight  md:text-2xl ">
                   Create Room
@@ -96,7 +97,7 @@ const CreatePage = () => {
                       name="title"
                       id="title"
                       onChange={(e) => setSubject(e.target.value)}
-                      className="bg-gray-50 border border-emerald-300 text-emerald-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                      className="bg-neutral-950 text-white border border-emerald-300 text-emerald-900 rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 focus:outline-none"
                       placeholder="Room title"
                       required
                     />

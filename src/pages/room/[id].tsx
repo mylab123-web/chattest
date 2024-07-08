@@ -11,6 +11,8 @@ import UserType from "@/app/types/UserType";
 import MemberType from "@/app/types/MemberType";
 import { HOST } from "@/app/config";
 
+import { v4 as uuidv4 } from "uuid";
+
 interface Response {
   data: Room;
 }
@@ -51,10 +53,16 @@ export const RoomPage = () => {
   const { id } = router.query;
 
   useEffect(() => {
-    const ws = new Client({ brokerURL: `ws://${process.env.HOST}/websocket/` });
+    const ws = new Client({ brokerURL: `ws://${HOST}/websocket/` });
 
     if (id) {
       ws.onConnect = (f) => {
+        const joined = localStorage.getItem("joined");
+
+        if (joined) {
+          joinChat(ws);
+        }
+
         setClient(ws);
       };
 
@@ -181,6 +189,22 @@ export const RoomPage = () => {
 
       subscribe(ws, localStorage.getItem("token") as string);
 
+      const joinedRooms = localStorage.getItem("joined");
+
+      if (joinedRooms) {
+        const prev = JSON.parse(joinedRooms);
+
+        localStorage.setItem(
+          "joined",
+          JSON.stringify({ ...prev, [id as string]: true })
+        );
+      } else {
+        localStorage.setItem(
+          "joined",
+          JSON.stringify({ [id as string]: true })
+        );
+      }
+
       setIsMember(true);
     }
   }
@@ -194,9 +218,9 @@ export const RoomPage = () => {
           <h2 className="text-white font-semibold mb-4">Members</h2>
 
           <ul>
-            {user && (
+            {user && isMember && (
               <li
-                id={user.id + "-" + Date.now()}
+                key={user.id + "-" + uuidv4()}
                 className="text-white mb-2 flex items-center"
               >
                 <img
@@ -211,7 +235,7 @@ export const RoomPage = () => {
 
             {members?.map((m) => (
               <li
-                key={m.memberId + "-" + Date.now()}
+                key={m.memberId + "-" + uuidv4()}
                 className="text-white mb-2 flex items-center"
               >
                 <img
@@ -247,7 +271,7 @@ export const RoomPage = () => {
                 <div className="min-h-96 overflow-y-auto">
                   {messages?.map((m) => (
                     <div
-                      key={m.sender.userId + "-" + Date.now()}
+                      key={m.sender.userId + "-" + uuidv4()}
                       className="flex items-center mt-2"
                     >
                       <div>

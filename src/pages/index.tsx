@@ -54,7 +54,7 @@ export default function Home() {
             {data.length > 0 ? (
               data.map((v) => <RoomCard key={v.id} room={v} />)
             ) : (
-              <h1>No rooms, yet.</h1>
+              <h1 className="text-2xl pl-2">No rooms, yet.</h1>
             )}
           </ul>
         </main>
